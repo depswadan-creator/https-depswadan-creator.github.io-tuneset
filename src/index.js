@@ -75,7 +75,7 @@ async function getAllPlaylists(token) {
   return all;
 }
 async function getPlaylistTracks(id, token) {
-  let all = [], url = "/playlists/" + id + "/tracks?limit=100&fields=next,items(track(id,name,artists,album(name,images)))";
+  let all = [], url = "/playlists/" + id + "/tracks?limit=100";
   while (url) { const d = await spFetch(url, token); all = [...all, ...(d.items||[]).filter(i=>i.track&&i.track.id).map(i=>i.track)]; url = d.next ? d.next.replace("https://api.spotify.com/v1","") : null; }
   return all;
 }
