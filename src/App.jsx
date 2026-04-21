@@ -296,15 +296,7 @@ export default function App() {
     setView("setup");
   };
 
-  const handlePlaylistSelect = async (pl) => {
-    setSelectedPlaylist(pl);
-    setLoadingTracks(true);
-    setView("songs");
-    const t = await getToken();
-    const tr = await getPlaylistTracks(pl.id, t).catch(() => []);
-    setTracks(tr);
-    setLoadingTracks(false);
-  };
+const handlePlaylist = async (pl) => { setPlaylist(pl); setLoadingTracks(true); setView("songs"); try { const t = await getToken(); const url = "/playlists/" + pl.id + "/tracks?limit=10"; const r = await fetch("https://api.spotify.com/v1" + url, { headers: { Authorization: "Bearer " + t } }); const d = await r.json(); alert("Status: " + r.status + "\nResponse: " + JSON.stringify(d).substring(0, 300)); const valid = (d.items||[]).filter(i=>i.track&&i.track.id).map(i=>i.track); setTracks(valid); } catch(e) { alert("Error: " + e.message); } setLoadingTracks(false); };
 
   const handleSongSelect = async (track) => {
     setSelectedSong(track);
